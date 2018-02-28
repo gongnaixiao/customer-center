@@ -6,9 +6,9 @@
 </head>
 <body>
 
-<div id="react"></div>
+<div id="root"></div>
 
-<script src="built/bundle.js"></script>
+<script src="build/bundle.js"></script>
 
 </body>
 </html>
