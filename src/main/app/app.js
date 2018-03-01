@@ -1,18 +1,12 @@
 import React from 'react';
-import {render} from 'react-dom';
-import Greeter from './Greeter';
+import ReactDOM from 'react-dom';
+import Container from './components/Container'
+
+import Greeter from './demo/Greeter';
 //import {AppContainer} from 'react-hot-loader'
+import './demo/main.css';
 
-import './main.css'; //使用require导入css文件
-
-/*
-render(
-  <AppContainer>
-  <Greeter/>
-</AppContainer>, document.getElementById('root'));
-*/
-
-render(
+ReactDOM.render(
     <Greeter />,
     document.getElementById('root')
-)
+);

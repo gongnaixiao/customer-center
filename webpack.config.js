@@ -1,16 +1,64 @@
 const webpack = require('webpack');
+const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 
+const sourceDirectory = path.resolve(__dirname, 'src/main/app');
+const targetDirectory = path.resolve(__dirname, 'src/main/resources/static/build');
+
+const isDev = process.env.NODE_ENV !== 'production';
+
+const plugins = [
+    new HtmlWebpackPlugin({
+        filename: 'index.html',
+        inject: true,
+        template: path.resolve(__dirname, 'src/main/app/index.html'),
+        minify: {
+            collapseWhitespace: !isDev,
+            removeComments: !isDev,
+            removeRedundantAttributes: !isDev
+        }
+    }),
+    new ExtractTextPlugin('style.css'),
+    new webpack
+        .optimize
+        .ModuleConcatenationPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+    new CleanWebpackPlugin('src/main/resources/static/build/*.*', {
+        root: __dirname,
+        verbose: true,
+        dry: false
+    })
+];
+
+if (!isDev) {
+    plugins.push(new webpack.DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify('production')
+    }), new UglifyJsPlugin({
+        uglifyOptions: {
+            compress: {
+                warnings: false
+            }
+        },
+        sourceMap: false
+    }),);
+}
+
 module.exports = {
-    entry: __dirname + "/src/main/app/app.js", //已多次提及的唯一入口文件
+    context: sourceDirectory,
+    entry: {
+        app: './app.js'
+    },
     output: {
-        path: __dirname + "/src/main/resources/static/build", //打包后的文件存放的地方
+        path: targetDirectory,
         filename: "bundle.js"
     },
-    devtool: 'eval-source-map',
+    //devtool: 'eval-source-map',
     devServer: {
-        contentBase: "/src/main/resources/static/build", //本地服务器所加载的页面所在的目录
+        contentBase: sourceDirectory, //本地服务器所加载的页面所在的目录
         historyApiFallback: true, //不跳转
         inline: true,
         hot: true
@@ -18,37 +66,31 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /(\.jsx|\.js)$/,
-                use: {
-                    loader: "babel-loader"
-                },
-                exclude: /node_modules/
-            }, {
-                test: /\.css$/,
+                test: /\.js$/,
+                exclude: [/node_modules/],
                 use: [
                     {
-                        loader: "style-loader"
-                    }, {
-                        loader: "css-loader",
-                        options: {
-                            modules: true
-                        }
-                    }, {
-                        loader: "postcss-loader"
+                        loader: 'babel-loader'
+                    }
+                ]
+            }, {
+                test: /\.less$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: ['css-loader', 'less-loader']
+                })
+            }, {
+                test: /\.css$/,
+                use: ExtractTextPlugin.extract({fallback: 'style-loader', use: ['css-loader']})
+            }, {
+                test: /\.html$/,
+                use: [
+                    {
+                        loader: 'html-loader'
                     }
                 ]
             }
         ]
     },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: __dirname + "/src/main/app/index.html" //new 一个这个插件的实例，并传入相关的参数
-        }),
-        new webpack.HotModuleReplacementPlugin(),
-        new CleanWebpackPlugin('/src/main/resources/static/build/*.*', {
-            root: __dirname,
-            verbose: true,
-            dry: false
-        }) //热加载插件
-    ]
+    plugins,
 }
