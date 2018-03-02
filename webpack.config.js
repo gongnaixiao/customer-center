@@ -50,13 +50,14 @@ if (!isDev) {
 module.exports = {
     context: sourceDirectory,
     entry: {
-        app: './app.js'
+        app: './index.js'
     },
     output: {
         path: targetDirectory,
         filename: "bundle.js"
     },
     //devtool: 'eval-source-map',
+    //devtool: 'inline-source-map',
     devServer: {
         contentBase: sourceDirectory, //本地服务器所加载的页面所在的目录
         historyApiFallback: true, //不跳转
@@ -80,8 +81,8 @@ module.exports = {
                     use: ['css-loader', 'less-loader']
                 })
             }, {
-                test: /\.css$/,
-                use: ExtractTextPlugin.extract({fallback: 'style-loader', use: ['css-loader']})
+                test: /\.s?css$/,
+                use: ExtractTextPlugin.extract({fallback: 'style-loader', use: ['css-loader','sass-loader']})
             }, {
                 test: /\.html$/,
                 use: [

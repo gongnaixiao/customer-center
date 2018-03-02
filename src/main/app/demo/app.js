@@ -1,18 +1,10 @@
-import React from 'react';
-import {render} from 'react-dom';
-import Greeter from './Greeter';
-//import {AppContainer} from 'react-hot-loader'
+import React, {Component} from 'react';
+import Container from './tab/Container'
+import Greeter from './greet/Greeter'
+import Clicker from './clicker/Clicker'
 
-import './main.css'; //使用require导入css文件
-
-/*
-render(
-  <AppContainer>
-  <Greeter/>
-</AppContainer>, document.getElementById('root'));
-*/
-
-render(
-    <Greeter />,
-    document.getElementById('root')
-)
+export default class App extends Component {
+  render() {
+    return (<Clicker />);
+  }
+}
