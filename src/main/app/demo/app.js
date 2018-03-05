@@ -5,6 +5,6 @@ import Clicker from './clicker/Clicker'
 
 export default class App extends Component {
   render() {
-    return (<Clicker />);
+    return (<Container />);
   }
 }

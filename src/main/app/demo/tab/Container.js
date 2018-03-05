@@ -7,26 +7,10 @@ class Container extends Component {
     return (
       <Tabs>
         <TabList>
-          <Tab>Mario</Tab>
-          <Tab disabled>Luigi</Tab>
-          <Tab>Peach</Tab>
-          <Tab>Yoshi</Tab>
-          <Tab>Toad</Tab>
+          <Tab>客户中心</Tab>
         </TabList>
         <TabPanel>
-          <p>Mario</p>
-        </TabPanel>
-        <TabPanel>
-          <p>Luigi</p>
-        </TabPanel>
-        <TabPanel>
-          <p>Peach</p>
-        </TabPanel>
-        <TabPanel>
-          <p>Yoshi</p>
-        </TabPanel>
-        <TabPanel>
-          <p>Toad</p>
+          <span>菜单1</span>
         </TabPanel>
       </Tabs>
     );
