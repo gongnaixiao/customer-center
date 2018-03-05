@@ -13,16 +13,14 @@ class Container extends Component {
   componentDidMount() {
     //首页
 
-    //TODO
-    //当点击菜单的时候，打开菜单指向的标签页
+    //TODO 当点击菜单的时候，打开菜单指向的标签页
     this.setState({
       store: [
         {
           id: 1,
           title: 'first',
           content: 'first content'
-        },
-        {
+        }, {
           id: 2,
           title: 'second',
           content: 'second content'
@@ -31,8 +29,15 @@ class Container extends Component {
     });
   }
 
+  handleClick(id) {
+    alert(this.state.store[id]);
+  }
+
   render() {
-    const tabStore = this.state.store.slice();
+    const tabStore = this
+      .state
+      .store
+      .slice();
 
     return (
       <Tabs>
@@ -40,26 +45,25 @@ class Container extends Component {
           <Tab>
             首页
           </Tab>
-          {
-            tabStore.map((one) => 
-              <Tab key={one.id}>
-                {one.title}
-              </Tab>
-            )
-          }
+          {tabStore.map((one) => <Tab key={one.id}>
+            {one.title}
+          </Tab>)
+}
         </TabList>
         <TabPanel>
-          首页
+          <button onClick={(one) => this.handleClick().bind(this)}>
+            菜单1
+          </button>
+          <button>
+            菜单2
+          </button>
         </TabPanel>
-        {
-          tabStore.map((one) => 
-            <TabPanel key={one.id}>
-              <p>
-                {one.content}
-              </p>
-            </TabPanel>
-          )
-        }
+        {tabStore.map((one) => <TabPanel key={one.id}>
+          <p>
+            {one.content}
+          </p>
+        </TabPanel>)
+}
 
       </Tabs>
     );
