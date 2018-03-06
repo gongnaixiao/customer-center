@@ -5,38 +5,51 @@ class Container extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      menu: [],
-      store: []
+      menus: [],
+      pages: []
     };
   }
 
   componentDidMount() {
     //首页
 
-    //TODO 当点击菜单的时候，打开菜单指向的标签页
+    //TODO 当点击菜单的时候，打开菜单指向的标签页 菜单
     this.setState({
-      store: [
+      menus: [
         {
           id: 1,
-          title: 'first',
-          content: 'first content'
+          name: '菜单1',
+          url: ''
         }, {
           id: 2,
-          title: 'second',
-          content: 'second content'
+          name: '菜单2',
+          url: ''
         }
       ]
     });
+
   }
 
-  handleClick(id) {
-    alert(this.state.store[id]);
+  handleClick(menu) {
+    const pages = this
+      .state
+      .pages
+      .slice();
+    if (!pages.includes(menu)) {
+      pages.push(menu);
+    }
+    
+    this.setState({pages: pages});
   }
 
   render() {
-    const tabStore = this
+    const pages = this
       .state
-      .store
+      .pages
+      .slice();
+    const menus = this
+      .state
+      .menus
       .slice();
 
     return (
@@ -45,26 +58,22 @@ class Container extends Component {
           <Tab>
             首页
           </Tab>
-          {tabStore.map((one) => <Tab key={one.id}>
-            {one.title}
-          </Tab>)
-}
+          {pages.map((page) => <Tab key={page.id}>
+            {page.name}
+          </Tab>)}
         </TabList>
         <TabPanel>
-          <button onClick={(one) => this.handleClick().bind(this)}>
-            菜单1
-          </button>
-          <button>
-            菜单2
-          </button>
-        </TabPanel>
-        {tabStore.map((one) => <TabPanel key={one.id}>
-          <p>
-            {one.content}
-          </p>
-        </TabPanel>)
-}
+          {menus.map((menu) => <button
+            key={menu.id}
+            onClick={this
+            .handleClick
+            .bind(this, menu)}>{menu.name}</button>)}</TabPanel>
 
+        {pages.map((page) => <TabPanel key={page.id}>
+          <p>
+            {page.content}
+          </p>
+        </TabPanel>)}
       </Tabs>
     );
   }
