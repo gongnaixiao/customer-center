@@ -56,8 +56,7 @@ module.exports = {
         path: targetDirectory,
         filename: "bundle.js"
     },
-    //devtool: 'eval-source-map',
-    //devtool: 'inline-source-map',
+    //devtool: 'eval-source-map', devtool: 'inline-source-map',
     devServer: {
         contentBase: sourceDirectory, //本地服务器所加载的页面所在的目录
         historyApiFallback: true, //不跳转
@@ -75,6 +74,14 @@ module.exports = {
                     }
                 ]
             }, {
+                test: /\.svg|png|jpg$/,
+                exclude: [/node_modules/],
+                use: [
+                    {
+                        loader: 'url-loader'
+                    }
+                ]
+            }, {
                 test: /\.less$/,
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
@@ -82,7 +89,10 @@ module.exports = {
                 })
             }, {
                 test: /\.s?css$/,
-                use: ExtractTextPlugin.extract({fallback: 'style-loader', use: ['css-loader','sass-loader']})
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: ['css-loader', 'sass-loader']
+                })
             }, {
                 test: /\.html$/,
                 use: [
@@ -93,5 +103,5 @@ module.exports = {
             }
         ]
     },
-    plugins,
+    plugins
 }
