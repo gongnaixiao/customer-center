@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import close from '../close.svg';
+import './react-tabs.css'
+import Foobar from './Foobar'
 
 class Container extends Component {
   constructor(props) {
@@ -21,11 +23,11 @@ class Container extends Component {
         {
           id: 1,
           name: '菜单1',
-          url: ''
+          url: 'www.baidu.com'
         }, {
           id: 2,
           name: '菜单2',
-          url: ''
+          url: 'www.baidu.com'
         }
       ]
     });
@@ -38,11 +40,15 @@ class Container extends Component {
       .pages
       .slice();
 
-    if (pages.findIndex(item => item.id === menu.id) == -1) {
+    let selectedIndex = pages.findIndex(item => item.id === menu.id);
+    if (selectedIndex == -1) {
       pages.push({id: menu.id, title: menu.name, content: menu.name});
+      selectedIndex = pages.length;
+    } else {
+      selectedIndex++;
     }
 
-    this.setState({pages: pages, selectedIndex: menu.id});
+    this.setState({pages: pages, selectedIndex: selectedIndex});
   }
 
   closeClick(page, event) {
@@ -56,12 +62,11 @@ class Container extends Component {
     this.setState({pages: pages, selectedIndex: 0});
   }
 
-  handleSelected(index, last) {
-    this.setState({
-      selectedIndex: index,
-      //...otherStateUpdates
-    });
-    return false;
+  handleSelected(index, last, event) {
+    const target = event.target;
+    if (!(target.name === 'close')) {
+      this.setState({selectedIndex: index});
+    }
   }
 
   render() {
@@ -79,7 +84,11 @@ class Container extends Component {
         onSelect={this
         .handleSelected
         .bind(this)}
-        selectedIndex={this.state.selectedIndex}>
+        selectedIndex={this.state.selectedIndex}
+        style={{
+        width: '100%',
+        height: '100%'
+      }}>
         <TabList>
           <Tab>
             首页
@@ -88,6 +97,7 @@ class Container extends Component {
           {pages.map((page) => <Tab key={page.id}>
             {page.title}
             <img
+              name='close'
               style={{
               position: 'absolute',
               opacity: 1,
@@ -99,8 +109,7 @@ class Container extends Component {
               onClick={this
               .closeClick
               .bind(this, page)}/>
-          </Tab>)
-}
+          </Tab>)}
 
         </TabList>
 
@@ -113,9 +122,7 @@ class Container extends Component {
         </TabPanel>
 
         {pages.map((page) => <TabPanel key={page.id}>
-          <p>
-            {page.content}
-          </p>
+          {page.content}
         </TabPanel>)}
 
       </Tabs>

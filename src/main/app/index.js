@@ -4,6 +4,6 @@ import App from './demo/app'
 import Container from './components/container'
 
 ReactDOM.render(
-    <Container />,
+    <App />,
     document.getElementById('root')
 );
